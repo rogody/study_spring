@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>새 일기 작성</title>
+    <style>
+        .container { width: 500px; margin: 20px auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        textarea { width: 100%; height: 200px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>✍️ 오늘의 기록</h1>
+    <form action="/diary/new" method="post">
+        <div class="form-group">
+            <label for="recordDay">날짜 선택</label>
+            <input type="date" id="recordDay" name="recordDay" required>
+        </div>
+
+        <div class="form-group">
+            <label for="content">내용</label>
+            <textarea id="content" name="content" placeholder="오늘 어떤 일이 있었나요?" required></textarea>
+        </div>
+
+        <button type="submit">일기 저장하기</button>
+        <a href="/diary">취소</a>
+    </form>
+</div>
+</body>
+</html>
