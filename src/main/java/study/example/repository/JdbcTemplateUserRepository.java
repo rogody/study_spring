@@ -1,5 +1,6 @@
 package study.example.repository;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,7 +27,10 @@ public class JdbcTemplateUserRepository implements UserRepository{
     @Override
     public User save(User user) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("user").usingGeneratedKeyColumns("user_id");
+        jdbcInsert.withTableName("user")
+                .usingGeneratedKeyColumns("user_id")
+                .usingColumns("username", "password");
+
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("username", user.getUserName());
         parameters.put("password", user.getPassword());
@@ -67,5 +71,17 @@ public class JdbcTemplateUserRepository implements UserRepository{
             user.setPassword(rs.getString("password"));
             return user;
         };
+    }
+
+    @PostConstruct
+    void temporaryAccount(){
+        if(findByName("Master").isEmpty())
+        {
+            User user = new User();
+            user.setUserId(1L);
+            user.setUserName("Master");
+            user.setPassword("1234");
+            this.save(user);
+        }
     }
 }

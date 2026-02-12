@@ -28,7 +28,8 @@ public class DiaryController {
     @PostMapping("/diary/new")
     public String createDiary(DiaryForm form){
         DiaryDTO dto = new DiaryDTO();
-        dto.setUserId(0L);
+        dto.setUserId(1L);
+        //유저 로그인 기능이 없으므로 임시로 만드는 master 계정의 userid로 선택
         dto.setRecordDay(form.getRecordDay());
         dto.setContent(form.getContent());
         diaryService.writeDiary(dto);

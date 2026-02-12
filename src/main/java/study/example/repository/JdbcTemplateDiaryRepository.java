@@ -22,6 +22,7 @@ public class JdbcTemplateDiaryRepository implements DiaryRepository{
     @Autowired
     public JdbcTemplateDiaryRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        System.out.println("jdbc template repository 사용중");
     }
 
 
