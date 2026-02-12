@@ -1,5 +1,6 @@
 package study.example.repository;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Repository;
 import study.example.domain.User;
 
@@ -12,7 +13,8 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public User save(User user) {
-        user.setUserId(sequence++);
+        if(user.getUserId() == null)
+            user.setUserId(sequence++);
         userMem.put(user.getUserId(), user);
         return user;
     }
@@ -35,5 +37,14 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public void clearStore() {
         userMem.clear();
+    }
+
+    @PostConstruct
+    void temporaryAccount(){
+        User user = new User();
+        user.setUserId(0L);
+        user.setUserName("Master");
+        user.setPassword("1234");
+        this.save(user);
     }
 }

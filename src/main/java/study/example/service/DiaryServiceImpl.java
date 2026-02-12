@@ -2,10 +2,14 @@ package study.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import study.example.controller.DiaryDTO;
 import study.example.domain.Diary;
 import study.example.repository.DiaryRepository;
 import study.example.repository.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +30,18 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     @Override
-    public Diary writeDiary(Long userId, String content) {
-        userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 user id 입니다."));
+    public List<Diary> getAll() {
+        return diaryRepository.findALL();
+    }
+
+    @Override
+    public Diary writeDiary(DiaryDTO dto) {
+        userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 user id 입니다."));
         Diary newDiary = new Diary();
-        newDiary.setUserId(userId);
-        newDiary.setContent(content);
+        newDiary.setUserId(dto.getUserId());
+        newDiary.setContent(dto.getContent());
+        newDiary.setRecordDay(dto.getRecordDay());
+        newDiary.setCreatedAt(LocalDateTime.now());
         diaryRepository.save(newDiary);
 
         return newDiary;

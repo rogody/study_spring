@@ -18,6 +18,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void join(User user) {
+        if(userRepository.findByName(user.getUserName()).isPresent())
+            throw new IllegalArgumentException("동일한 이름의 user가 존재합니다");
         userRepository.save(user);
     }
 
