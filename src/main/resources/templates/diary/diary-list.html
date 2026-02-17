@@ -4,39 +4,66 @@
     <meta charset="UTF-8">
     <title>일기 목록</title>
     <style>
-        .container { width: 800px; margin: 20px auto; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #f4f4f4; }
-        .no-data { text-align: center; padding: 20px; color: #888; }
+        /* 간단한 스타일 추가: 카드를 구분하기 쉽게 */
+        .diary-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .diary-title {
+            color: #333;
+            margin-top: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .diary-date {
+            color: #888;
+            font-size: 0.9em;
+        }
+        .ai-badge {
+            background-color: #e3f2fd;
+            color: #1565c0;
+            font-size: 0.8em;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>📖 나의 일기장</h1>
-    <a href="/diary/new">새 일기 쓰기</a>
-    <hr>
 
-    <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>기록 날짜</th>
-            <th>내용</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="diary : ${diaries}">
-            <td th:text="${diary.diaryId}">1</td>
-            <td th:text="${diary.recordDay}">2026-02-12</td>
-            <td th:text="${diary.content}">일기 내용...</td>
-        </tr>
+<h1>📒 내 일기장</h1>
 
-        <tr th:if="${diaries.isEmpty()}">
-            <td colspan="3" class="no-data">아직 작성된 일기가 없습니다. 첫 일기를 작성해 보세요!</td>
-        </tr>
-        </tbody>
-    </table>
+<div style="margin-bottom: 20px;">
+    <a href="/diary/new" class="button">새 일기 쓰기</a>
 </div>
+
+<div class="diary-list">
+    <p th:if="${diaries.isEmpty()}">아직 작성된 일기가 없습니다.</p>
+
+    <div th:each="diary : ${diaries}" class="diary-card">
+
+        <div style="display: flex; align-items: center;">
+            <h3 class="diary-title"
+                th:text="${diary.title != null ? diary.title : '(제목 없음)'}">
+                일기 제목
+            </h3>
+            <span th:if="${diary.title != null}" class="ai-badge">AI Title</span>
+        </div>
+
+        <p class="diary-date"
+           th:text="${#temporals.format(diary.recordDay, 'yyyy-MM-dd')}">
+            2024-01-01
+        </p>
+
+        <p th:text="${diary.content}">
+            일기 내용이 여기에 나옵니다.
+        </p>
+
+    </div>
+</div>
+
 </body>
 </html>

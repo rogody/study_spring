@@ -2,6 +2,7 @@ package study.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import study.example.controller.DiaryDTO;
 import study.example.domain.Diary;
 import study.example.repository.DiaryRepository;
@@ -13,15 +14,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class DiaryServiceImpl implements DiaryService{
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
+    private final AiService aiService;
 
     @Autowired
-    public DiaryServiceImpl(DiaryRepository diaryRepository, UserRepository userRepository) {
+    public DiaryServiceImpl(DiaryRepository diaryRepository, UserRepository userRepository, AiService aiService) {
         this.diaryRepository = diaryRepository;
         this.userRepository = userRepository;
+        this.aiService = aiService;
     }
 
     @Override
@@ -41,10 +45,20 @@ public class DiaryServiceImpl implements DiaryService{
         newDiary.setUserId(dto.getUserId());
         newDiary.setContent(dto.getContent());
         newDiary.setRecordDay(dto.getRecordDay());
-        newDiary.setCreatedAt(LocalDateTime.now());
-        diaryRepository.save(newDiary);
 
-        return newDiary;
+        newDiary.setCreatedAt(LocalDateTime.now());
+        String title;
+        try {
+            title = aiService.summarize(dto.getContent());
+            newDiary.setTitle(title);
+        }
+        catch(Exception e)
+        {
+            title = "null";
+            System.out.println("ai 답변 생성 중 error 발생" + e);
+        }
+
+        return diaryRepository.save(newDiary);
     }
 
     @Override
