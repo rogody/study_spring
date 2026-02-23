@@ -13,6 +13,8 @@ public interface DiaryRepository {
 
     List<Diary> findALL();
 
+    Diary modify(Diary diary);
+
     Optional<Diary> removeById(Long diaryId);
 
     void clearStore();

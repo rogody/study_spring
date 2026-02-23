@@ -63,10 +63,11 @@ public class DiaryServiceImpl implements DiaryService{
     }
 
     @Override
-    public Diary modifyDiary(Long diaryId, String content) {
+    public Diary modifyDiary(Long diaryId, DiaryDTO dto) {
 
         Diary updateDiary = diaryRepository.findByID(diaryId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일기장 id 입니다."));
-        updateDiary.setContent(content);
+        updateDiary.setContent(dto.getContent());
+        updateDiary.setRecordDay(dto.getRecordDay());
         diaryRepository.save(updateDiary);
 
         return updateDiary;

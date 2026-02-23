@@ -17,7 +17,7 @@ public interface DiaryService {
     //일기 내용 반환
 
     //일기 내용 수정
-    Diary modifyDiary(Long diaryId, String content);
+    Diary modifyDiary(Long diaryId, DiaryDTO dto);
 
     Diary removeDiary(Long diaryId);
 

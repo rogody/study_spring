@@ -54,6 +54,11 @@ public class JdbcTemplateDiaryRepository implements DiaryRepository{
     }
 
     @Override
+    public Diary modify(Diary diary) {
+        jdbcTemplate.update("update diary set content = ?, record_day = ? where diary_id = ?", diary.getContent(), diary.getRecordDay(), diary.getDiaryId());
+    }
+
+    @Override
     public Optional<Diary> removeById(Long diaryId) {
         Optional<Diary> result = findByID(diaryId);
         jdbcTemplate.update("delete from diary where diary_id = ?", diaryId);

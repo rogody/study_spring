@@ -30,6 +30,14 @@ public class MemoryDiaryRepository implements DiaryRepository{
     }
 
     @Override
+    public Diary modify(Diary diary) {
+        if(diary.getDiaryId()==null)
+            throw new IllegalArgumentException("diaryId does not exists");
+        diaryMem.replace(diary.getDiaryId(), diary);
+        return diary;
+    }
+
+    @Override
     public Optional<Diary> removeById(Long diaryId) {
         return Optional.ofNullable(diaryMem.remove(diaryId));
 
