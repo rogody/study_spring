@@ -4,31 +4,45 @@
     <meta charset="UTF-8">
     <title>일기 목록</title>
     <style>
-        /* 간단한 스타일 추가: 카드를 구분하기 쉽게 */
         .diary-card {
             border: 1px solid #ddd;
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px; /* 간격 살짝 늘림 */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative; /* 버튼 배치를 위해 추가 */
         }
-        .diary-title {
-            color: #333;
-            margin-top: 0;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .diary-date {
-            color: #888;
-            font-size: 0.9em;
-        }
+        .diary-title { color: #333; margin-top: 0; font-size: 1.2em; font-weight: bold; }
+        .diary-date { color: #888; font-size: 0.9em; margin-bottom: 10px; }
         .ai-badge {
-            background-color: #e3f2fd;
-            color: #1565c0;
-            font-size: 0.8em;
-            padding: 2px 6px;
+            background-color: #e3f2fd; color: #1565c0;
+            font-size: 0.8em; padding: 2px 6px; border-radius: 4px; margin-left: 5px;
+        }
+        /* 버튼 스타일 추가 */
+        .btn-manage {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 5px 12px;
+            background-color: #f8f9fa;
+            color: #555;
+            text-decoration: none;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            margin-left: 5px;
+            font-size: 0.85em;
+            transition: all 0.2s;
+        }
+        .btn-manage:hover {
+            background-color: #e2e6ea;
+            border-color: #adb5bd;
+        }
+        .button-main { /* 새 일기 쓰기 버튼 */
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4A90E2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -37,31 +51,37 @@
 <h1>📒 내 일기장</h1>
 
 <div style="margin-bottom: 20px;">
-    <a href="/diary/new" class="button">새 일기 쓰기</a>
+    <a href="/diary/new" class="button-main">✍️ 새 일기 쓰기</a>
 </div>
 
 <div class="diary-list">
-    <p th:if="${diaries.isEmpty()}">아직 작성된 일기가 없습니다.</p>
+    <p th:if="${diaries.isEmpty()}">아직 작성된 일기가 없습니다. 첫 일기를 작성해보세요!</p>
 
     <div th:each="diary : ${diaries}" class="diary-card">
 
-        <div style="display: flex; align-items: center;">
-            <h3 class="diary-title"
-                th:text="${diary.title != null ? diary.title : '(제목 없음)'}">
-                일기 제목
-            </h3>
-            <span th:if="${diary.title != null}" class="ai-badge">AI Title</span>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+            <div style="display: flex; align-items: center;">
+                <h3 class="diary-title"
+                    th:text="${diary.title != null ? diary.title : '(제목 없음)'}">
+                    일기 제목
+                </h3>
+                <span th:if="${diary.title != null}" class="ai-badge">AI Title</span>
+            </div>
+            <span class="diary-date"
+                  th:text="${#temporals.format(diary.recordDay, 'yyyy-MM-dd')}">
+                2024-01-01
+            </span>
         </div>
 
-        <p class="diary-date"
-           th:text="${#temporals.format(diary.recordDay, 'yyyy-MM-dd')}">
-            2024-01-01
-        </p>
-
-        <p th:text="${diary.content}">
+        <p th:text="${diary.content}" style="color: #555; line-height: 1.5;">
             일기 내용이 여기에 나옵니다.
         </p>
 
+        <div style="text-align: right;">
+            <a th:href="@{/diary/edit/{id}(id=${diary.diaryId})}" class="btn-manage">
+                ⚙️ 관리 (수정/삭제)
+            </a>
+        </div>
     </div>
 </div>
 
