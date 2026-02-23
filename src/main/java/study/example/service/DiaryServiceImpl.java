@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import study.example.controller.DiaryDTO;
 import study.example.domain.Diary;
+import study.example.domain.User;
 import study.example.repository.DiaryRepository;
 import study.example.repository.UserRepository;
 
@@ -76,4 +77,6 @@ public class DiaryServiceImpl implements DiaryService{
         return diaryRepository.removeById(diaryId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일기장 id 입니다. "));
 
     }
+
+
 }

@@ -78,7 +78,6 @@ public class JdbcTemplateUserRepository implements UserRepository{
         if(findByName("Master").isEmpty())
         {
             User user = new User();
-            user.setUserId(1L);
             user.setUserName("Master");
             user.setPassword("1234");
             this.save(user);

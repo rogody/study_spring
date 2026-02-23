@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import study.example.domain.Diary;
 import study.example.service.DiaryService;
+import study.example.service.UserService;
 
 import java.util.List;
 
@@ -16,10 +17,12 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final UserService userService;
 
     @Autowired
-    public DiaryController(DiaryService diaryService){
+    public DiaryController(DiaryService diaryService, UserService userService){
         this.diaryService = diaryService;
+        this.userService = userService;
     }
 
     @GetMapping("/diary/new")
@@ -28,7 +31,7 @@ public class DiaryController {
     @PostMapping("/diary/new")
     public String createDiary(DiaryForm form){
         DiaryDTO dto = new DiaryDTO();
-        dto.setUserId(1L);
+        dto.setUserId(userService.getCurrentId());
         //유저 로그인 기능이 없으므로 임시로 만드는 master 계정의 userid로 선택
         dto.setRecordDay(form.getRecordDay());
         dto.setContent(form.getContent());

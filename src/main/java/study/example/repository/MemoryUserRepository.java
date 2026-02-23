@@ -42,7 +42,7 @@ public class MemoryUserRepository implements UserRepository{
     @PostConstruct
     void temporaryAccount(){
         User user = new User();
-        user.setUserId(0L);
+        user.setUserId(1L);
         user.setUserName("Master");
         user.setPassword("1234");
         this.save(user);
