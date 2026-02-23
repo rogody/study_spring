@@ -27,4 +27,12 @@ public class UserServiceImpl implements UserService{
     public Optional<User> findUser(Long userId) {
         return userRepository.findById(userId);
     }
+
+    //임의로 마스터 계정으로 고정해서 사용, 추후 로그인 기능 완성 시 수정
+    @Override
+    public Long getCurrentId(){
+        User master = userRepository.findByName("Master").orElseThrow(()->new IllegalArgumentException("Master 계정이 존재하지 않습니다."));
+        return master.getUserId();
+    }
+
 }

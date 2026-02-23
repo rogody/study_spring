@@ -9,4 +9,7 @@ public interface UserService {
     void join(User user);
 
     Optional<User> findUser(Long userId);
+
+    Long getCurrentId();
+
 }
