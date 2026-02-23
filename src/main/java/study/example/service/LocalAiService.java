@@ -12,18 +12,18 @@ import java.util.UUID;
 @Component
 public class LocalAiService implements AiService{
     //llm의 system prompt
-    private String systemPrompt =
-            "역할: 일기 제목 생성기\n" +
-                    "\n" +
-                    "입력된 일기를 읽고 제목 하나만 생성하세요.\n" +
-                    "\n" +
-                    "출력 형식:\n" +
-                    "- 제목만 출력\n" +
-                    "- 다른 문장 절대 금지\n" +
-                    "- 한 줄만 출력\n" +
-                    "- 따옴표 금지\n" +
-                    "- 최대 15단어\n" +
-                    "- 입력과 같은 언어 사용";
+    private String systemPrompt = " You create a short diary title.\n" +
+            "\n" +
+            "Read the diary text and generate ONE title.\n" +
+            "\n" +
+            "Rules:\n" +
+            "- Output title only.\n" +
+            "- No explanation.\n" +
+            "- No quotes.\n" +
+            "- Maximum 15 words.\n" +
+            "- Use the same language as the diary.\n" +
+            "- Make it natural and emotional.";
+
 
     private final AbstractModel LLM;
 
@@ -40,7 +40,7 @@ public class LocalAiService implements AiService{
                     .get()
                     .builder()
                     .addSystemMessage(systemPrompt)
-                    .addUserMessage(("\n\n일기:\n" + userPrompt))
+                    .addUserMessage("\n\n diary:\n" + userPrompt)
                     .build();
         } else {
             ctx = PromptContext.of(systemPrompt+userPrompt);
