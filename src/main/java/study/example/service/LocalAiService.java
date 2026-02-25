@@ -13,9 +13,7 @@ import java.util.UUID;
 public class LocalAiService implements AiService{
     //llm의 system prompt
     private String systemPrompt = " You create a short diary title.\n" +
-            "\n" +
             "Read the diary text and generate ONE title.\n" +
-            "\n" +
             "Rules:\n" +
             "- Output title only.\n" +
             "- No explanation.\n" +
@@ -23,7 +21,6 @@ public class LocalAiService implements AiService{
             "- Maximum 15 words.\n" +
             "- Use the same language as the diary.\n" +
             "- Make it natural and emotional.";
-
 
     private final AbstractModel LLM;
 
@@ -40,7 +37,7 @@ public class LocalAiService implements AiService{
                     .get()
                     .builder()
                     .addSystemMessage(systemPrompt)
-                    .addUserMessage("\n\n diary:\n" + userPrompt)
+                    .addUserMessage("\n diary:\n" + userPrompt)
                     .build();
         } else {
             ctx = PromptContext.of(systemPrompt+userPrompt);
@@ -58,10 +55,11 @@ public class LocalAiService implements AiService{
         Generator.Response r = LLM.generateBuilder()
                 .session(UUID.randomUUID()) //By default, UUID.randomUUID()
                 .promptContext(ctx) // Required or use prompt(String text)
-                .ntokens(256) //By default, 256
+                .ntokens(2048) //By default, 256
                 .temperature(0.0f) //By default, 0.0f
                 .onTokenWithTimings((s, aFloat) -> {}) //By default, (s, aFloat) -> {}, nothing
                 .generate();
+
         return r.responseText;
     }
 }

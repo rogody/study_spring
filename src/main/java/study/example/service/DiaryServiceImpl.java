@@ -68,7 +68,19 @@ public class DiaryServiceImpl implements DiaryService{
         Diary updateDiary = diaryRepository.findByID(diaryId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 일기장 id 입니다."));
         updateDiary.setContent(dto.getContent());
         updateDiary.setRecordDay(dto.getRecordDay());
-        diaryRepository.save(updateDiary);
+        String title;
+        try {
+            title = aiService.summarize(dto.getContent());
+            updateDiary.setTitle(title);
+        }
+        catch(Exception e)
+        {
+            title = "null";
+            System.out.println("ai 답변 생성 중 error 발생" + e);
+        }
+
+        diaryRepository.modify(updateDiary);
+
 
         return updateDiary;
     }

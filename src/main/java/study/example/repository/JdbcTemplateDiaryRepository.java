@@ -55,7 +55,7 @@ public class JdbcTemplateDiaryRepository implements DiaryRepository{
 
     @Override
     public Diary modify(Diary diary) {
-        jdbcTemplate.update("update diary set content = ?, record_day = ? where diary_id = ?", diary.getContent(), diary.getRecordDay(), diary.getDiaryId());
+        jdbcTemplate.update("update diary set title = ?, content = ?, record_day = ? where diary_id = ?", diary.getTitle(), diary.getContent(), diary.getRecordDay(), diary.getDiaryId());
         return diary;
     }
 
